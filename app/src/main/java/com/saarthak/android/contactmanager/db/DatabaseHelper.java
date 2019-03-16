@@ -10,6 +10,7 @@ import com.saarthak.android.contactmanager.db.entity.Contact;
 
 import java.util.ArrayList;
 
+import androidx.room.Database;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -66,7 +67,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
         SQLiteDatabase db = this.getReadableDatabase();
-
         Cursor cursor = db.query(Contact.TABLE_NAME,
                 new String[]{Contact.COLUMN_ID, Contact.COLUMN_NAME, Contact.COLUMN_EMAIL},
                 Contact.COLUMN_ID + "=?",
