@@ -17,7 +17,7 @@ public interface ContactsDAO {
     public long addContact(Contact contact);
 
     @Update
-    public long updateContact(Contact contact);
+    public void updateContact(Contact contact);
 
     @Delete
     public void deleteContact(Contact contact);
