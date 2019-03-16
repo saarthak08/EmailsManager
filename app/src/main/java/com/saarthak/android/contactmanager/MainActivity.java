@@ -20,6 +20,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.saarthak.android.contactmanager.Threads.AddContactService;
+import com.saarthak.android.contactmanager.Threads.DeleteContactService;
+import com.saarthak.android.contactmanager.Threads.UpdateContactsService;
+import com.saarthak.android.contactmanager.Threads.getAllContactsService;
 import com.saarthak.android.contactmanager.adapter.ContactsAdapter;
 import com.saarthak.android.contactmanager.db.ContactsAppDatabase;
 //import com.saarthak.android.contactmanager.db.DatabaseHelper;
@@ -29,10 +33,10 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ContactsAdapter contactsAdapter;
-    private ArrayList<Contact> contactArrayList = new ArrayList<>();
+    public static ContactsAdapter contactsAdapter;
+    public static ArrayList<Contact> contactArrayList = new ArrayList<>();
     private RecyclerView recyclerView;
-    private ContactsAppDatabase contactsAppDatabase;
+    public static ContactsAppDatabase contactsAppDatabase;
     //private DatabaseHelper db;
 
 
@@ -42,12 +46,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(" Contacts Manager");
+        getSupportActionBar().setTitle(" Email Manager");
         recyclerView = findViewById(R.id.recycler_view_contacts);
-        contactsAppDatabase= Room.databaseBuilder(getApplicationContext(),ContactsAppDatabase.class,"ContactsDB").allowMainThreadQueries().build();
         //db = new DatabaseHelper(this);
         //contactArrayList.addAll(db.getAllContacts());
-        contactArrayList.addAll(contactsAppDatabase.getContactDAO().getContacts());
+        contactsAppDatabase = Room.databaseBuilder(getApplicationContext(), ContactsAppDatabase.class, "ContactsDB").build();
+        new getAllContactsService().execute();
         contactsAdapter = new ContactsAdapter(this, contactArrayList, MainActivity.this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
@@ -154,41 +158,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void deleteContact(Contact contact, int position) {
-
         contactArrayList.remove(position);
-        contactsAppDatabase.getContactDAO().deleteContact(contact);
-        contactsAdapter.notifyDataSetChanged();
+        new DeleteContactService().execute(contact);
     }
 
     private void updateContact(String name, String email, int position) {
 
         Contact contact = contactArrayList.get(position);
-
         contact.setName(name);
         contact.setEmail(email);
-
-        contactsAppDatabase.getContactDAO().updateContact(contact);
-
+        new UpdateContactsService().execute(contact);
         contactArrayList.set(position, contact);
-
-        contactsAdapter.notifyDataSetChanged();
 
 
     }
 
     private void createContact(String name, String email) {
-
-        long id = contactsAppDatabase.getContactDAO().addContact(new Contact(0,name, email));
-
-
-        Contact contact = contactsAppDatabase.getContactDAO().getContact(id);
-
-        if (contact != null) {
-
-            contactArrayList.add(0, contact);
-            contactsAdapter.notifyDataSetChanged();
-
-        }
-
+        new AddContactService().execute(new Contact(0,name,email));
     }
 }
