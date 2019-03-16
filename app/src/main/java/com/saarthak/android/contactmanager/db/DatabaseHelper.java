@@ -1,5 +1,5 @@
 package com.saarthak.android.contactmanager.db;
-
+/*
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -136,3 +136,4 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 }
+*/
