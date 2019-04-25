@@ -28,4 +28,8 @@ public interface ContactsDAO {
     @Query("select * from contacts where contact_id==:contactID")
     public Contact getContact(long contactID);
 
+    @Query("select * from contacts where contact_email=:contactEmail")
+    public boolean checkContact(String contactEmail);
+
+
 }

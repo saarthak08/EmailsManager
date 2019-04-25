@@ -34,15 +34,19 @@ import com.saarthak.android.contactmanager.adapter.ContactsAdapter;
 import com.saarthak.android.contactmanager.db.ContactsAppDatabase;
 //import com.saarthak.android.contactmanager.db.DatabaseHelper;
 import com.saarthak.android.contactmanager.db.entity.Contact;
+import com.saarthak.android.contactmanager.di.App;
 
 import java.util.ArrayList;
+
+import javax.inject.Inject;
 
 public class MainActivity extends AppCompatActivity {
 
     public static ContactsAdapter contactsAdapter;
     public static ArrayList<Contact> contactArrayList = new ArrayList<>();
     private RecyclerView recyclerView;
-    public static ContactsAppDatabase contactsAppDatabase;
+    @Inject
+    public ContactsAppDatabase contactsAppDatabase;
     //private DatabaseHelper db;
 
 
@@ -56,7 +60,8 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recycler_view_contacts);
         //db = new DatabaseHelper(this);
         //contactArrayList.addAll(db.getAllContacts());
-        contactsAppDatabase = Room.databaseBuilder(getApplicationContext(), ContactsAppDatabase.class, "ContactsDB").addCallback(callback).build();
+      //  contactsAppDatabase = Room.databaseBuilder(getApplicationContext(), ContactsAppDatabase.class, "ContactsDB").addCallback(callback).build();
+        App.getApp().getApplicationComponent().inject(this);
         new getAllContactsService().execute();
         contactsAdapter = new ContactsAdapter(this, contactArrayList, MainActivity.this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
