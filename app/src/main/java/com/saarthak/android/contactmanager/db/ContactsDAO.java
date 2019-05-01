@@ -10,6 +10,8 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import io.reactivex.Flowable;
+
 @Dao
 public interface ContactsDAO {
 
@@ -22,8 +24,11 @@ public interface ContactsDAO {
     @Delete
     public void deleteContact(Contact contact);
 
-    @Query("select * from contacts" )
-    public List<Contact> getContacts();
+   /* @Query("select * from contacts" )
+    public List<Contact> getContacts();*/
+
+   @Query("select * from contacts")
+   Flowable<List<Contact>> getContacts();
 
     @Query("select * from contacts where contact_id==:contactID")
     public Contact getContact(long contactID);
