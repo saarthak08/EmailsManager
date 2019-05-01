@@ -1,2 +1,7 @@
 # EmailsManager
-    An app to manage & store emails of people with database implementation using ROOM.
+    An android app to manage & store emails of people.
+    
+## *Libraries:*
+- RxJava
+- Room
+- Dagger-2
